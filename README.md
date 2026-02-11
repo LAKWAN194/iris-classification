@@ -32,7 +32,7 @@ This project demonstrates the **end-to-end ML workflow**:
 ## 🧠 Model Details
 
 - **Type:** Classification
-- **Algorithm:** (e.g. Logistic Regression / SVM / KNN — update if needed)
+- **Algorithm:** Logistic Regression
 - **Dataset:** Iris dataset
 - **Evaluation Metrics:** Accuracy, Confusion Matrix, Classification Report
 - **Performance:** Achieves very high accuracy due to the clean and separable nature of the dataset
