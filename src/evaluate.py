@@ -84,9 +84,41 @@ def print_evaluation_results(results):
     print(results['classification_report'])
 
 
-def plot_confusion_matrix(cm, class_names=None, figsize=(8, 6)):
+def save_classification_report(results, report_path="../reports/classification_report.txt"):
+    """
+    Save the evaluation metrics and classification report to a text file
+    """
+    lines = [
+        "IRIS CLASSIFICATION - EVALUATION REPORT",
+        "=" * 40,
+        f"Train Accuracy:    {results['train_accuracy']:.4f}",
+        f"Test Accuracy:     {results['test_accuracy']:.4f}",
+        "",
+        f"Precision (Macro): {results['precision']:.4f}",
+        f"Recall (Macro):    {results['recall']:.4f}",
+        f"F1-score (Macro):  {results['f1_score']:.4f}",
+        "",
+        f"ROC-AUC (Macro):   {results['roc_auc']:.4f}",
+        f"Log Loss:          {results['log_loss']:.4f}",
+        "",
+        "Confusion Matrix:",
+        str(results['confusion_matrix']),
+        "",
+        "Classification Report:",
+        results['classification_report'],
+    ]
+
+    with open(report_path, "w") as f:
+        f.write("\n".join(lines))
+
+    print(f"Report saved to {report_path}")
+
+
+def plot_confusion_matrix(cm, class_names=None, figsize=(8, 6), save_path=None):
     """
     Plot confusion matrix as heatmap
+
+    If save_path is given the figure is saved there instead of being shown
     """
     if class_names is None:
         class_names = ['Setosa', 'Versicolor', 'Virginica']
@@ -98,4 +130,10 @@ def plot_confusion_matrix(cm, class_names=None, figsize=(8, 6)):
     plt.ylabel('True Label')
     plt.xlabel('Predicted Label')
     plt.tight_layout()
-    plt.show()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150)
+        plt.close()
+        print(f"Confusion matrix saved to {save_path}")
+    else:
+        plt.show()

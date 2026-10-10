@@ -1,6 +1,12 @@
 import pandas as pd
 import warnings
-from IPython.display import display
+
+try:
+    # Nicer tables when running inside a notebook
+    from IPython.display import display
+except ImportError:
+    # IPython is not needed to run the pipeline from the command line
+    display = print
 
 warnings.filterwarnings('ignore')
 
