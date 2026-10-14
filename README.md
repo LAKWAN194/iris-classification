@@ -32,7 +32,7 @@ This project demonstrates the **end-to-end ML workflow**:
 ## 🧠 Model Details
 
 - **Type:** Classification
-- **Algorithm:** Logistic Regression
+- **Algorithm:** Logistic Regression (with feature scaling)
 - **Dataset:** Iris dataset
 - **Evaluation Metrics:** Accuracy, Confusion Matrix, Classification Report
 - **Performance:** Achieves very high accuracy due to the clean and separable nature of the dataset
@@ -48,22 +48,42 @@ The Streamlit app allows users to:
 
 ---
 
+## 📊 Results
+
+Running the pipeline writes the evaluation to `reports/`:
+
+- `reports/classification_report.txt` — accuracy, precision, recall, F1, ROC-AUC, log loss and the confusion matrix
+- `reports/figures/confusion_matrix.png`
+- `reports/figures/pairplot.png` — every pair of features, coloured by class
+- `reports/figures/pca_plot.png` — the four features projected onto two principal components
+
+On the 30-flower test set the model classifies every flower correctly (train accuracy 96.7%).
+
+![PCA of the iris features](reports/figures/pca_plot.png)
+
+---
+
 ## 🚀 How to Run the App Locally
 
 ### 1️⃣ Clone the repository
 ```bash
 git clone https://github.com/LAKWAN194/iris-classification.git
-cd iris-classification-app
+cd iris-classification
 ```
 
-2️⃣ Install dependencies
+### 2️⃣ Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-3️⃣ Run the Streamlit app
+### 3️⃣ (Optional) Retrain the model and regenerate the reports
 ```bash
-python -m streamlit run app.py
+python run_pipeline.py
+```
+
+### 4️⃣ Run the Streamlit app
+```bash
+python -m streamlit run app/app.py
 ```
 
 The app will open in your browser at:

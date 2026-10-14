@@ -5,6 +5,9 @@ Main pipeline script to run the entire ML workflow
 import sys
 import os
 
+import matplotlib
+matplotlib.use("Agg")  # figures are saved to files, so no window is needed
+
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
@@ -12,7 +15,9 @@ from data_loader import load_data, display_data_info
 from preprocessing import (check_data_quality, encode_categorical, 
                           prepare_features_targets, save_processed_data)
 from train import load_processed_data, split_data, train_model, save_model
-from evaluate import evaluate_model, print_evaluation_results
+from evaluate import (evaluate_model, print_evaluation_results,
+                      save_classification_report, plot_confusion_matrix)
+from visualize import plot_pairplot, plot_pca
 
 def main():
     print("=" * 60)
@@ -47,6 +52,16 @@ def main():
     print("\n4. Evaluating model...")
     results = evaluate_model(model, X_train, y_train, X_test, y_test)
     print_evaluation_results(results)
+    
+    # Step 5: Save reports
+    print("\n5. Saving reports...")
+    os.makedirs("reports/figures", exist_ok=True)
+    save_classification_report(results, report_path="reports/classification_report.txt")
+    plot_confusion_matrix(results['confusion_matrix'],
+                          class_names=list(label_encoder.classes_),
+                          save_path="reports/figures/confusion_matrix.png")
+    plot_pairplot(df, save_path="reports/figures/pairplot.png")
+    plot_pca(X, df['class'], save_path="reports/figures/pca_plot.png")
     
     print("\n" + "=" * 60)
     print("PIPELINE COMPLETED SUCCESSFULLY!")

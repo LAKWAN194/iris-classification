@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 import joblib
 import warnings
 
@@ -32,11 +34,17 @@ def split_data(X, y, test_size=0.2, random_state=42):
 def train_model(X_train, y_train, model_params=None):
     """
     Train logistic regression model
+
+    The scaler is part of the saved model, so anything that loads the model
+    (like the Streamlit app) can pass in raw measurements in cm
     """
     if model_params is None:
         model_params = {'max_iter': 200}
     
-    model = LogisticRegression(**model_params)
+    model = Pipeline([
+        ('scaler', StandardScaler()),
+        ('classifier', LogisticRegression(**model_params))
+    ])
     model.fit(X_train, y_train)
     
     return model
